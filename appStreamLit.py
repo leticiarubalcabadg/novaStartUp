@@ -229,7 +229,7 @@ system_prompt_3=[
      '''
         A continuación vas a tener una tabla con proveedores, herramientas, y direcciones.
         Muestrame la información agrupada por proveedores y pregunta al usuario que proveedor le gusta mas. 
-        El formato de la respuesta son bullet points.
+        El formato de la respuesta son bullet points con emojis..
         No te inventes nada y hablame en español.
 
         {lista_herramientas}
