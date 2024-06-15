@@ -149,6 +149,35 @@ datos2 = {
 }
 
 
+data_videos = {
+    "Kit": [
+        "Kit de reparación del hogar",
+        "Kit de pintura para principiantes",
+        "Kit de carpintería básico",
+        "Kit de jardinería",
+        "Kit de electricidad doméstica",
+        "Kit de costura",
+        "Kit de fontanería",
+        "Kit de reparación de bicicletas",
+        "Kit de manualidades",
+        "Kit de reparación de muebles"
+    ],
+    "Video de YouTube": [
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "https://www.youtube.com/watch?v=oHg5SJYRHA0",
+        "https://www.youtube.com/watch?v=2Z4F4fzaJcA",
+        "https://www.youtube.com/watch?v=DIYtLMR7g50",
+        "https://www.youtube.com/watch?v=1D4MJC1JNbU",
+        "https://www.youtube.com/watch?v=djv6hM7_aVI",
+        "https://www.youtube.com/watch?v=rZz2-tpK8aM",
+        "https://www.youtube.com/watch?v=H6ALv6vKJb8",
+        "https://www.youtube.com/watch?v=PxXZONnSoK4",
+        "https://www.youtube.com/watch?v=kXYiU_JCYtU"
+    ]
+}
+
+
+
 noEntro= False
 noEntro2= False
 
@@ -160,6 +189,8 @@ herramientas_df = pd.DataFrame(datos)
 
 materiales_compradores_df = pd.DataFrame(datos2)
 
+youtube_videos = pd.DataFrame(data_videos)
+
 def find_most_similar_string(main_string, string_list):
     best_match = difflib.get_close_matches(main_string, string_list, n=1)
     return best_match[0] if best_match else None
@@ -168,7 +199,7 @@ def find_most_similar_string(main_string, string_list):
 system_prompt_1=[
     {"role": "system", "content": 
      '''
-     Tienes que clasificar la pregunta del cliente en alguno de estos cuatro campos. Tu objetivo es devolver únicamente uno de esos 4 campos:
+     Tienes que clasificar la pregunta del cliente en alguno de estos cuatro campos. Tu objetivo es devolver únicamente uno de esos 4 campos entre doble comillas:
 
      -   "Kit de pintura para principiantes",
      -   "Kit de carpintería básico",
@@ -196,8 +227,8 @@ system_prompt_2=[
 system_prompt_3=[
     {"role": "system", "content": 
      '''
-        A continuación vas a tener una tabla con proveedores, herramientas, y direcciones.  
-        Y pregunta al usuario que proveedor le gusta mas. 
+        A continuación vas a tener una tabla con proveedores, herramientas, y direcciones.
+        Muestrame la información agrupada por proveedores y pregunta al usuario que proveedor le gusta mas. 
         El formato de la respuesta son bullet points.
         No te inventes nada y hablame en español.
 
@@ -213,11 +244,33 @@ system_prompt_4=[
      '''
         Eres un asistente de bricolaje que se llama ToolAI y le vas a dar las gracias por seleccionar los proveedores de {prompt}.
 
-        Y le vas a ofrecer instrucciones de como construir {prompt_original}.
+        Y le vas a ofrecer instrucciones de como construir {prompt_original}. Utiliza emojis.
 
      '''
      }
 ]
+
+        # Y dependiendo de lo que necesita el usuario({prompt_original}) elige algunos de estos videos:
+
+        # - Para colgar un cuadro: https://www.youtube.com/watch?v=hXcqBeZKBvk
+        # - Para hacer manualidades: https://www.youtube.com/watch?v=Ct3xVwaUtXI
+        # - Pintar la pared: https://www.youtube.com/watch?v=Bw0B0-wS9cs
+
+
+system_prompt_5=[
+    {"role": "system", "content": 
+     '''
+        Eres un asistente de bricolaje que se llama ToolAI ya le has mandado a los proveedores toda la información necesaria sobre el pedido.
+        Recuerdale al usuario que para empezar de nuevo el proceso tiene que refrescar la página, y que su pedido esta ya en camino.
+
+        Ahora ya te puede preguntar todo lo que el usuario quiera
+        
+
+     '''
+     }
+]
+
+
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", "content": "Hola soy ToolAI, ¿Como te puedo ayudar?"}]
@@ -226,6 +279,7 @@ if "messages" not in st.session_state:
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
 
+global user_kit
 if prompt := st.chat_input():
 
     if len(st.session_state.messages)==0:
@@ -256,8 +310,14 @@ if prompt := st.chat_input():
             )
 
         print('response = chunk.choices[0].delta.content', chat_completion.choices[0].message.content)
+        
+
         response_message_tipo = chat_completion.choices[0].message.content
 
+        # After streaming
+        # if True:  # Check and use the full_response as needed
+        #     response_message = {"role": "system", "content": response_message_tipo}
+        #     st.session_state.messages.append(response_message)
 
         response_message = {"role": "assistant", "content": chat_completion}
         # Use a regular expression to extract the relevant classification
@@ -311,6 +371,7 @@ if prompt := st.chat_input():
             st.session_state.messages.append(response_message)
 
         noEntro= True
+        print('len(st.session_state.messages',len(st.session_state.messages))
     elif len(st.session_state.messages)>=3 and len(st.session_state.messages)<5:
         #ya ha elegido el usuario los materiales que quiere con comas, brochas, rodillos
         print('prompt', prompt)
@@ -318,7 +379,8 @@ if prompt := st.chat_input():
         elementos = re.split(r', | y ', prompt)
 
         # Eliminar espacios adicionales alrededor de cada elemento usando strip()
-        user_lista_materiales_aComprar = [elemento.strip().replace('y ','').lower() for elemento in elementos if elemento.strip()]
+        user_lista_materiales_aComprar = [elemento.strip().replace('y ','').lower() for elemento in elementos]
+        print('user_lista_materiales_aComprar',user_lista_materiales_aComprar)
 
         materiales_compradores_df['Herramienta'] = materiales_compradores_df['Herramienta'].str.lower()
 
@@ -381,9 +443,9 @@ if prompt := st.chat_input():
             st.session_state.messages.append(response_message)
 
 
-    elif len(st.session_state.messages)>=4:        #ya ha elegido el usuario los materiales que quiere con comas, brochas, rodillos, sus proveedores, direccion etc
-        print('prompt', prompt, 'st.session_state.messages[0]', st.session_state.messages) #TODO
-        prompt_original=st.session_state.messages[1]
+    elif len(st.session_state.messages)>4 and len(st.session_state.messages)<7:        #ya ha elegido el usuario los materiales que quiere con comas, brochas, rodillos, sus proveedores, direccion etc
+        print('st.session_state.messages',st.session_state.messages)
+        prompt_original=st.session_state.messages[1]['content']  
 
         system_prompt_4[0]['content'] = system_prompt_4[0]['content'].format(prompt= prompt,prompt_original=prompt_original)
 
@@ -424,6 +486,42 @@ if prompt := st.chat_input():
             # with st.chat_message("assistant"):
             #     st.markdown(full_response)
             st.session_state.messages.append(response_message)
+    
+    else:
+
+        with st.chat_message("assistant"):
+            completion = client.chat.completions.create(
+                messages= st.session_state.messages + system_prompt_5,
+                model="mixtral-8x7b-32768",
+                temperature=0.01,
+                max_tokens=1024,
+                top_p=1,
+                stop=None,
+                stream=True,
+            )
+
+        full_response = ""  # Initialize outside the generator
+
+        def generate_responses(completion):
+            global full_response
+            for chunk in completion:
+                response = chunk.choices[0].delta.content or ""
+                if response:
+                    full_response += response  # Append to the full response
+                    yield response
+
+        stream = generate_responses(completion)
+        st.write_stream(stream)
+        noEntro2= True
+
+        
+        # After streaming
+        if full_response:  # Check and use the full_response as needed
+            response_message = {"role": "assistant", "content": full_response}
+            # with st.chat_message("assistant"):
+            #     st.markdown(full_response)
+            st.session_state.messages.append(response_message)
+    
 
 
 
