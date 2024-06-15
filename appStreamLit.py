@@ -10,6 +10,7 @@ left_co, cent_co,last_co = st.columns(3)
 with cent_co:
     st.image('novalogo.png',width=200)
     st.title("ToolAI")
+    st.subheader("Pregunta sobre pintar tu casa, carpintería, manualidades, o reparar muebles ")
 
 #groq
 GROQ_API_KEY = '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'
@@ -179,7 +180,8 @@ system_prompt_2=[
     {"role": "system", "content": 
      '''
         A continuación vas a tener una lista de herramientas necesarias.        
-        Tu objetivo es mostrarmelas on guiones , y preguntar al usuario que herramientas quiere comprar. Tienes que ser muy servicial. No te inventes nada.
+        Tu objetivo es mostrarmelas on guiones , y preguntar al usuario que herramientas quiere comprar. Tienes que ser muy servicial. 
+        No te inventes nada y hablame en español.
 
         {lista_herramientas}
 
@@ -194,7 +196,7 @@ system_prompt_3=[
         A continuación vas a tener una tabla con proveedores, herramientas, y direcciones.  
         Y pregunta al usuario que proveedor le gusta mas. 
         El formato de la respuesta son bullet points.
-        No te inventes nada.
+        No te inventes nada y hablame en español.
 
         {lista_herramientas}
 
