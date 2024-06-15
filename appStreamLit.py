@@ -8,9 +8,12 @@ import difflib
 
 left_co, cent_co,last_co = st.columns(3)
 with cent_co:
-    st.image('novalogo.png',width=200)
+    st.image('toolAI.jpg',width=200)
     st.title("ToolAI")
-    st.subheader("Pregunta sobre pintar tu casa, carpintería, manualidades, o reparar muebles ")
+
+# st.subheader("Pregunta sobre pintar tu casa, carpintería, manualidades, o reparar muebles ")
+st.markdown("<h4 style='text-align: center;'>¿Te gustaría alquilar pintura para tu casa, herramientas de carpintería, o de manualidades?</h4>", unsafe_allow_html=True)
+
 
 #groq
 GROQ_API_KEY = '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'
