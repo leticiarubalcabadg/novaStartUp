@@ -326,12 +326,13 @@ if prompt := st.chat_input():
 
         materiales_compradores_prompt = materiales_compradores_df[materiales_compradores_df['Comprar']==True]
         try:
-            materiales_compradores_prompt.drop('Comprar')
+            materiales_compradores_prompt.drop(columns=['Comprar'], inplace=True) 
         except:
             print('no existe compra')
 
         # Group by 'proveedor'
-        grupo_proveedor = materiales_compradores_prompt.groupby('Proveedor').count()
+        # grupo_proveedor = materiales_compradores_prompt.groupby('Proveedor').count()
+        grupo_proveedor= materiales_compradores_prompt
         system_prompt_3[0]['content'] = system_prompt_3[0]['content'].format(lista_herramientas= grupo_proveedor)
 
 
@@ -360,7 +361,7 @@ if prompt := st.chat_input():
             for index, chunk in enumerate(completion):
                 if index==0:
                     direccion="Calle de Fernández de la Hoz, 7, Chamberí, 28003 Madrid"
-                    response_intro= f'Hemos detectado que estas en la direccion: {direccion}. A continuación te ponemos los proveedores más cerca: \n'
+                    response_intro= f'Hemos detectado que estas en la direccion: {direccion} \n'
                     yield response_intro
                 response = chunk.choices[0].delta.content or ""
                 if response:
