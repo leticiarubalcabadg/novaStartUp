@@ -8,7 +8,7 @@ import difflib
 
 left_co, cent_co,last_co = st.columns(3)
 with cent_co:
-    st.image('toolAI.jpg',width=200)
+    st.image('toolAI2.jpg',width=200)
     st.title("ToolAI")
 
 # st.subheader("Pregunta sobre pintar tu casa, carpintería, manualidades, o reparar muebles ")
