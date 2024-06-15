@@ -179,7 +179,7 @@ system_prompt_2=[
     {"role": "system", "content": 
      '''
         A continuación vas a tener una lista de herramientas necesarias.        
-        Tu objetivo es tranformamelas a bullet points, y preguntar al usuario que herramientas quiere comprar. Tienes que ser muy friendly. No te inventes nada.
+        Tu objetivo es mostrarmelas on guiones , y preguntar al usuario que herramientas quiere comprar. Tienes que ser muy servicial. No te inventes nada.
 
         {lista_herramientas}
 
@@ -320,7 +320,10 @@ if prompt := st.chat_input():
         materiales_compradores_df['Comprar'] = materiales_compradores_df['Herramienta'].isin(user_lista_materiales_aComprar)
 
         materiales_compradores_prompt = materiales_compradores_df[materiales_compradores_df['Comprar']==True]
-        materiales_compradores_prompt.drop('Comprar')
+        try:
+            materiales_compradores_prompt.drop('Comprar')
+        except:
+            print('no existe compra')
 
         # Group by 'proveedor'
         grupo_proveedor = materiales_compradores_prompt.groupby('Proveedor').count()
