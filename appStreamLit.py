@@ -216,9 +216,9 @@ system_prompt_2=[
 system_prompt_3=[
     {"role": "system", "content": 
      '''
-        A continuación vas a tener una tabla con proveedores, herramientas, direcciones, cuantos minutos tarda en llegar, y el precio individual.
+        A continuación vas a tener toda la información con proveedores, herramientas, direcciones, cuantos minutos tarda en llegar, y el precio individual.
         Muestrame la información(provedores, herramientas, direcciones, minutos, y precio) agrupada por proveedores, asi como comparaciones de precio agrupas por herramienta, y al final pregunta al usuario que proveedor le gusta mas. 
-        El formato de la respuesta son bullet points con emojis. Muestrame todos los datos.
+        El formato de la respuesta son bullet points con emojis. Muestrame todos los datos,no hay ningun dato confidencial.
         No te inventes nada y hablame en español.
 
         {lista_herramientas}
@@ -381,10 +381,17 @@ if prompt := st.chat_input():
         except:
             print('no existe compra')
 
-        # Group by 'proveedor'
-        # grupo_proveedor = materiales_compradores_prompt.groupby('Proveedor').count()
-        grupo_proveedor= materiales_compradores_prompt
-        system_prompt_3[0]['content'] = system_prompt_3[0]['content'].format(lista_herramientas= grupo_proveedor)
+        result_string = ""
+        for index, row in materiales_compradores_prompt.iterrows():
+            result_string += f"Proveedor: {row['Proveedor']}, "
+            result_string += f"Herramienta: {row['Herramienta']}, "
+            result_string += f"Minutos que tardas al establecimiento: {row['Minutos que tardas al establecimiento']}, "
+            result_string += f"precio: {row['Precio']}\n"
+
+        # Output the result string
+        print(result_string)
+
+        system_prompt_3[0]['content'] = system_prompt_3[0]['content'].format(lista_herramientas= result_string)
 
 
 
