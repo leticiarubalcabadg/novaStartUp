@@ -166,33 +166,6 @@ datos2 = {
 }
 
 
-data_videos = {
-    "Kit": [
-        "Kit de reparación del hogar",
-        "Kit de pintura para principiantes",
-        "Kit de carpintería básico",
-        "Kit de jardinería",
-        "Kit de electricidad doméstica",
-        "Kit de costura",
-        "Kit de fontanería",
-        "Kit de reparación de bicicletas",
-        "Kit de manualidades",
-        "Kit de reparación de muebles"
-    ],
-    "Video de YouTube": [
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "https://www.youtube.com/watch?v=oHg5SJYRHA0",
-        "https://www.youtube.com/watch?v=2Z4F4fzaJcA",
-        "https://www.youtube.com/watch?v=DIYtLMR7g50",
-        "https://www.youtube.com/watch?v=1D4MJC1JNbU",
-        "https://www.youtube.com/watch?v=djv6hM7_aVI",
-        "https://www.youtube.com/watch?v=rZz2-tpK8aM",
-        "https://www.youtube.com/watch?v=H6ALv6vKJb8",
-        "https://www.youtube.com/watch?v=PxXZONnSoK4",
-        "https://www.youtube.com/watch?v=kXYiU_JCYtU"
-    ]
-}
-
 
 
 noEntro= False
@@ -206,7 +179,6 @@ herramientas_df = pd.DataFrame(datos)
 
 materiales_compradores_df = pd.DataFrame(datos2)
 
-youtube_videos = pd.DataFrame(data_videos)
 
 def find_most_similar_string(main_string, string_list):
     best_match = difflib.get_close_matches(main_string, string_list, n=1)
@@ -246,7 +218,7 @@ system_prompt_3=[
      '''
         A continuación vas a tener una tabla con proveedores, herramientas, direcciones, cuantos minutos tarda en llegar, y el precio individual.
         Muestrame la información(provedores, herramientas, direcciones, minutos, y precio) agrupada por proveedores, asi como comparaciones de precio agrupas por herramienta, y al final pregunta al usuario que proveedor le gusta mas. 
-        El formato de la respuesta son bullet points con emojis. No omitas ningun dato, todos son importantes.
+        El formato de la respuesta son bullet points con emojis. Muestrame todos los datos.
         No te inventes nada y hablame en español.
 
         {lista_herramientas}
