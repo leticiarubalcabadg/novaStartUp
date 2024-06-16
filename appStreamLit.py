@@ -246,7 +246,7 @@ system_prompt_3=[
      '''
         A continuación vas a tener una tabla con proveedores, herramientas, direcciones, cuantos minutos tarda en llegar, y el precio individual.
         Muestrame la información(provedores, herramientas, direcciones, minutos, y precio) agrupada por proveedores, asi como comparaciones de precio agrupas por herramienta, y al final pregunta al usuario que proveedor le gusta mas. 
-        El formato de la respuesta son bullet points con emojis..
+        El formato de la respuesta son bullet points con emojis. No omitas ningun dato, todos son importantes.
         No te inventes nada y hablame en español.
 
         {lista_herramientas}
