@@ -9,7 +9,7 @@ import difflib
 left_co, cent_co,last_co = st.columns(3)
 with cent_co:
     st.image('toolAI2.png',width=200)
-    st.title("ToolAI")
+    st.title("RENOVAPP")
 
 # st.subheader("Pregunta sobre pintar tu casa, carpintería, manualidades, o reparar muebles ")
 st.markdown("<h4 style='text-align: center;'>¿Te gustaría alquilar pintura para tu casa, herramientas de carpintería, o de manualidades?</h4>", unsafe_allow_html=True)
@@ -146,14 +146,23 @@ datos2 = {
         "Calle de las Flores 2626",
         "Avenida de los Arcos 2727"
     ],
-        "Minutos": [
+        "Minutos que tardas al establecimiento": [
         15, 10, 5, 20, 25,
         5, 30, 5, 10, 15,
         5, 20, 10, 15, 30,
         5, 5, 5, 10, 5,
         10, 5, 10, 5, 5,
         10, 5, 10, 5, 5
+    ],
+    "Precio": [
+        3, 2, 1, 4, 2,
+        2, 7, 7, 3, 6,
+        7, 2, 1, 6, 7,
+        4, 6, 4, 7, 1,
+        5, 5, 2, 6, 2,
+        5, 5, 3, 1, 5
     ]
+
 }
 
 
@@ -235,8 +244,8 @@ system_prompt_2=[
 system_prompt_3=[
     {"role": "system", "content": 
      '''
-        A continuación vas a tener una tabla con proveedores, herramientas, direcciones, y cuantos minutos tarda en llegar.
-        Muestrame la información agrupada por proveedores y pregunta al usuario que proveedor le gusta mas. 
+        A continuación vas a tener una tabla con proveedores, herramientas, direcciones, cuantos minutos tarda en llegar, y el precio individual.
+        Muestrame la información(provedores, herramientas, direcciones, minutos, y precio) agrupada por proveedores, asi como comparaciones de precio agrupas por herramienta, y al final pregunta al usuario que proveedor le gusta mas. 
         El formato de la respuesta son bullet points con emojis..
         No te inventes nada y hablame en español.
 
@@ -250,7 +259,7 @@ system_prompt_3=[
 system_prompt_4=[
     {"role": "system", "content": 
      '''
-        Eres un asistente de bricolaje que se llama ToolAI y le vas a dar las gracias por seleccionar los proveedores de {prompt}.
+        Eres un asistente de bricolaje que se llama RENOVAPP y le vas a dar las gracias por seleccionar los proveedores de {prompt}.
 
         Y le vas a ofrecer instrucciones de como construir {prompt_original}. Utiliza emojis.
 
@@ -268,7 +277,7 @@ system_prompt_4=[
 system_prompt_5=[
     {"role": "system", "content": 
      '''
-        Eres un asistente de bricolaje que se llama ToolAI ya le has mandado a los proveedores toda la información necesaria sobre el pedido.
+        Eres un asistente de bricolaje que se llama RENOVAPP ya le has mandado a los proveedores toda la información necesaria sobre el pedido.
         Recuerdale al usuario que para empezar de nuevo el proceso tiene que refrescar la página, y que su pedido esta ya en camino.
 
         Ahora ya te puede preguntar todo lo que el usuario quiera
@@ -281,7 +290,7 @@ system_prompt_5=[
 
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "Hola soy ToolAI, ¿Como te puedo ayudar?"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "Hola soy RENOVAPP, ¿Como te puedo ayudar?"}]
 
 
 for msg in st.session_state.messages:
