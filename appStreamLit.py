@@ -145,6 +145,14 @@ datos2 = {
         "Paseo del Prado 2525",
         "Calle de las Flores 2626",
         "Avenida de los Arcos 2727"
+    ],
+        "Minutos": [
+        15, 10, 5, 20, 25,
+        5, 30, 5, 10, 15,
+        5, 20, 10, 15, 30,
+        5, 5, 5, 10, 5,
+        10, 5, 10, 5, 5,
+        10, 5, 10, 5, 5
     ]
 }
 
@@ -227,7 +235,7 @@ system_prompt_2=[
 system_prompt_3=[
     {"role": "system", "content": 
      '''
-        A continuación vas a tener una tabla con proveedores, herramientas, y direcciones.
+        A continuación vas a tener una tabla con proveedores, herramientas, direcciones, y cuantos minutos tarda en llegar.
         Muestrame la información agrupada por proveedores y pregunta al usuario que proveedor le gusta mas. 
         El formato de la respuesta son bullet points con emojis..
         No te inventes nada y hablame en español.
